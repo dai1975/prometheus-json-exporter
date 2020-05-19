@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"strings"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -57,8 +58,15 @@ func WalkJSON(path string, jsonData interface{}, receiver Receiver) {
 	}
 }
 
-func doProbe(client *http.Client, target string) (interface{}, error) {
-	resp, err := client.Get(target)
+func doProbe(client *http.Client, target string, post string) (interface{}, error) {
+	var resp *http.Response
+     var err error
+	if post == "" {
+		resp, err = client.Get(target)
+	} else {
+		log.Print("POST...")
+		resp, err = client.Post(target, "application/json", strings.NewReader(post))
+	}
 	if err != nil {
 		return nil, err
 	}
@@ -100,9 +108,11 @@ func probeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	post := params.Get("post")
+
 	prefix := params.Get("prefix")
 
-	jsonData, err := doProbe(httpClient, target)
+	jsonData, err := doProbe(httpClient, target, post)
 	if err != nil {
 		log.Print(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
