@@ -64,7 +64,6 @@ func doProbe(client *http.Client, target string, post string) (interface{}, erro
 	if post == "" {
 		resp, err = client.Get(target)
 	} else {
-		log.Print("POST...")
 		resp, err = client.Post(target, "application/json", strings.NewReader(post))
 	}
 	if err != nil {
