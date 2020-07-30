@@ -8,11 +8,19 @@ Installation
 --------------------
 
 ```
-$ go get github.com/shiroyagicorp/prometheus-json-exporter
+$ go get github.com/dai1975/prometheus-json-exporter
+```
+
+or use dockerhub
+
+```
+$ docker run --rm dai1975/prometheus-json-exporter
 ```
 
 Example Usage
 --------------------
+
+## shiroyagicorp version
 
 ```
 $ curl -s "http://validate.jsontest.com/?json=%7B%22key%22:%22value%22%7D"
@@ -39,10 +47,21 @@ size 1
 validate 1
 ```
 
+## addtion of dai1975 version
+
+* support the exporter calls endpoint by using HTTP POST
+
+```
+$ curl -s "http://localhost:9116/probe?target=http://validate.jsontest.com/?json=%7B%22key%22:%22value%22%7D&post"
+```
+
+
 Note
 ----------
 
-This repository is a fork of https://github.com/tolleiv/json-exporter
+This repository is a fork from
+  - https://github.com/shiroyagicorp/prometheus-json-exporter
+  - https://github.com/tolleiv/json-exporter
 
 License
 ----------
